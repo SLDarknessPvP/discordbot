@@ -5,6 +5,7 @@ A fairly simple discord bot written in python.
 
 * I've started an implementation of .mp3 playback within the bot, so please note it's not the greatest nor the most reliable.
 
+This software uses libraries from the FFmpeg project under the LGPLv2.1
 
 ### Windows Installation
 
