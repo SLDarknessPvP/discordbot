@@ -16,7 +16,7 @@ Click on start menu and type 'cmd' and then right click on the Command Prompt an
 
 3) Run the command in Command Prompt to install the Discord Python API:
 ```PowerShell
-python -m pip install asyncio discord.py
+python -m pip install asyncio discord.py discord.py[voice]
 ```
 
 4) Download the bot files from Github and store them where you'd like
