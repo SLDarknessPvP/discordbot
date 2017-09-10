@@ -3,6 +3,7 @@ import sys
 from configparser import ConfigParser
 import discord
 from discord import opus
+import asyncio
 
 # Imports Opus Libs
 OPUS_LIBS = ['libopus-0.x86.dll', 'libopus-0.x64.dll']
@@ -49,39 +50,22 @@ async def on_message(msg):
         if msg.content.startswith(cmd_char):
             userinput = msg.content.lower().replace(cmd_char, "")
             if userinput == 'help':
-                g_4 = '\n' + cmd_char
-                g_3 = '{0}git\n{0}{1}'.format(
-                    cmd_char, g_4.join(os.listdir('music/')))
-                g_3 = g_3.lower().replace(fileformat, '')
-                g_2 = 'Commands for ' + bot_name + ':\n' + \
-                    g_3 + '\nYou must be in a voice channel for this command to work.'
+                g_1 = ('''```Markdown''' + "\n# Commands for " + bot_name + ":\n\n" + "{}info - Displays information about the bot\n```".format(cmd_char))
                 if not msg.channel.is_private:
                     await dclient.send_message(msg.channel, ':mailbox_with_mail:')
-                await dclient.send_message(msg.author, g_2)
+                await dclient.send_message(msg.author, g_1)
             elif userinput == 'info':
-                await dclient.send_message(msg.channel, 'I\'m a fairly simple bot coded in Python by wolfbitez. You can find his GitHub here: https://github.com/wolfbitez/discordbot/')
+                await dclient.send_message(msg.channel, 'I\'m a bot coded in Python by wolfbitez. You can find his GitHub at https://github.com/wolfbitez/discordbot/')
             else:
                 if msg.author.voice_channel:
                     try:
                         voice = await dclient.join_voice_channel(msg.author.voice_channel)
                         player = voice.create_ffmpeg_player('music/' + userinput + fileformat)
                         player.start()
+                        await dclient.send_message(msg.channel, 'Now playing **' + userinput + '** requested by **{}** in **{}**'.format(msg.author, msg.author.voice_channel))
                     except:
                         pass
                 else:
                     await dclient.send_message(msg.channel, 'You\'re currently not in a voice channel!')
-                while True:
-                    try:
-                        if player.is_playing():
-                            dclient.send_message(discord.Object(id=Channel_ID), "Song playing.")
-                            break
-                        if player.error():
-                            dclient.send_message(discord.Object(id=Channel_ID), player.error)
-                            break
-                        if player.is_done():
-                            await voice.disconnect()
-                            break
-                    except:
-                        break
 
 dclient.run(Token_ID)
